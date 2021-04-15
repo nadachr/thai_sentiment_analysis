@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Restaurant Reviews Sentiment Analysis</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='food.ico') }}">
+        <link rel="stylesheet" type="text/css" href="../static/styles.css">
+        <script src="https://kit.fontawesome.com/5f3f547070.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+    	<div class="container">
+            <h2 class='container-heading'><span class="heading_font">ระบบวิเคราะห์ความรู้สึกความคิดเห็นต่อร้านอาหาร</h2>
+            <div class='description'>
+    			<p>โปรดแสดงความคิดเห็นต่อร้านอาหารแห่งนี้ว่าเป็นอย่างไรบ้าง?</p>
+    		</div>
+        </div>
+        
+    	<div class="ml-container">
+            {% if valid == 0%}
+                <div class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    ระบุความคิดเห็นด้วยสิ!
+                </div>
+            {% endif %}
+    		<form action="{{ url_for('predict') }}" method="POST">
+                <div class="container">
+                    <div class="row">
+                        <textarea class='message-box' name="message" rows="15" cols="75" placeholder="ตัวอย่าง: 'อาหารอร่อยมาก', 'เป็นร้านอาหารที่ยอดเยี่ยมมากๆ', 'บริการแย่มาก' หรือ 'น้ำซุปเค็มมาก รสชาติแบบนี้ไม่ผ่าน' เป็นต้น"></textarea><br/>
+                    </div>
+                    <div class="row" style="margin-bottom: 10px;">
+                        <h3>เลือกผลลัพธ์ที่ถูกต้องของข้อความ <b>*จำเป็น</b></h3>
+                        <input type="radio" id="pos" name="result" value="1" required>
+                        <label for="pos">แง่บวก (Positive)</label><br>
+                        <input type="radio" id="neg" name="result" value="0" required>
+                        <label for="neg">แง่ลบ (Negative)</label><br>
+                    </div>
+                    <input type="submit" id="submit" class="my-cta-button" value="วิเคราะห์">
+                </div>
+        	</form>
+        </div>
+        
+        <div class='footer'>
+            <!-- <div class="contact">
+             <a target="_blank" href="https://github.com/nadachr"><i class="fab fa-github fa-lg contact-icon"></i></a>
+             <a target="_blank" href="https://www.facebook.com/nada.the.unknown/"><i class="fab fa-facebook fa-lg contact-icon"></i></a>
+             <a target="_blank" href="https://www.instagram.com/nada_with_an_a/"><i class="fab fa-instagram fa-lg contact-icon"></i></a>
+            </div> -->
+            <p class='footer-description'>Nada Chemreh 161404140022</p>
+            <p class='footer-description'>Kritsanaphong Muninnoppamat 161404140013</p>
+            <p class='footer-description'>Jiraphong Songniam 161404140016</p>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </body>
+</html>

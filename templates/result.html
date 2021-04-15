@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+	<head>
+        <meta charset="utf-8">
+        <title>Restaurant Reviews Sentiment Analysis</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='food.ico') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+        <script src="https://kit.fontawesome.com/5f3f547070.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap" rel="stylesheet">
+	</head>
+
+	<body>
+    	<div class="container">
+            <h2 class='container-heading'><span class="heading_font">ระบบวิเคราะห์ความรู้สึกความคิดเห็นต่อร้านอาหาร</h2>
+            <div class='description'>
+    			<p>มาดูกันว่าความคิดเห็นเป็นไปในทางที่ดีหรือแย่</p>
+    		</div>
+    	</div>
+
+		<div class="results">
+			{% if prediction==1 %}
+				<h1>ผลลัพธ์: <span class='safe'>ยอดเยี่ยม!!! เหมือนว่าลูกค้าจะชอบร้านอาหารแห่งนี้นะเนี้ย :)</span></h1>
+				<img src="{{ url_for('static', filename='positive.jpg') }}" alt="Positive Review" height="450px">
+			{% elif prediction==0 %}
+				<h1>ผลลัพธ์: <span class='danger'>โอ้... เหมือนว่าลูกค้าจะไม่ชอบร้านอาหารแห่งนี้เอาซะเลย ;(</span></h1>
+				<img src="{{ url_for('static', filename='negative.jpg') }}" alt="Negative Review" height="450px">
+			{% endif %}
+
+            {% if target==1 %}
+                <h3>(Result is on Target!)</h3>
+            {% elif target==0 %}
+                <h3>(Oh.. Result is NOT on Target..)</h3>
+			{% endif %}
+            
+            <div class="row">
+				<a href=/ class="my-cta-button">กลับ</a>
+			</div>
+		</div>
+
+       <div class='footer'>
+           <div class="contact">
+			<a target="_blank" href="https://github.com/nadachr"><i class="fab fa-github fa-lg contact-icon"></i></a>
+			<a target="_blank" href="https://www.facebook.com/nada.the.unknown/"><i class="fab fa-facebook fa-lg contact-icon"></i></a>
+			<a target="_blank" href="https://www.instagram.com/nada_with_an_a/"><i class="fab fa-instagram fa-lg contact-icon"></i></a>
+           </div>
+		   <p class='footer-description'>Nada Chemreh 161404140022</p>
+		   <p class='footer-description'>Kritsanaphong Muninnoppamat 1614041400--</p>
+		   <p class='footer-description'>Jiraphong Songniam 1614041400--</p>
+       </div>
+
+    </body>
+</html>
