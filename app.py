@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+import pickle
 from nltk import NaiveBayesClassifier as nbc
 from pythainlp.tokenize import word_tokenize
 import codecs
@@ -6,31 +7,6 @@ from itertools import chain
 import pymysql
 
 app = Flask(__name__)
-
-# pos.txt
-with codecs.open('pos.txt', 'r', "utf-8") as f:
-    lines = f.readlines()
-listpos=[e.strip() for e in lines]
-del lines
-f.close() # ปิดไฟล์
-
-# neg.txt
-with codecs.open('neg.txt', 'r', "utf-8") as f:
-    lines = f.readlines()
-listneg=[e.strip() for e in lines]
-f.close() # ปิดไฟล์
-
-pos1=['pos']*len(listpos)
-neg1=['neg']*len(listneg)
-
-training_data = list(zip(listpos,pos1)) + list(zip(listneg,neg1))
-
-vocabulary = set(chain(*[word_tokenize(i[0].lower()) for i in training_data]))
-
-feature_set = [({i:(i in word_tokenize(sentence.lower())) for i in vocabulary},tag) for sentence, tag in training_data]
-
-classifier = nbc.train(feature_set)
-
 
 conn = pymysql.connect(    
     host = '127.0.0.1',
@@ -46,6 +22,9 @@ def home():
 
 @app.route('/analysis', methods=['POST'])
 def predict():
+    classifier = pickle.load(open('sentiment.pkl', 'rb'))
+    vocabulary = pickle.load(open('vocabulary.pkl', 'rb'))
+
     if request.method == 'POST':
         message = request.form['message']
         result = request.form['result']
@@ -84,28 +63,6 @@ def predict():
                     conn.commit()
 
             return render_template('result.html', prediction=my_prediction, target=tg)
-
-# @app.route('/database')
-# def showData():
-#     with conn.cursor() as cur:
-#         cur.execute("SELECT * FROM test_tbl")
-#         row = cur.fetchall()
-#         return render_template('show.html', data=row)
-
-# @app.route("/insert",methods=['POST'])
-# def insert():
-#     if request.method=="POST":
-#         message = request.form['message']
-#         result = request.form['result']
-    
-#     with conn.cursor() as cursors:
-#         ## เก็บค่าไว้ในตัวแปร ในที่นี้ เป็น string ทั้งหมด
-#         sql="Insert into `test_tbl` (`test_id`,`test_del`,`test_con`) values(null,%s,%s)"
-#         cursors.execute(sql,(message,result))
-#         ## commit เป็นคำสั่งเปลี่ยนแปลงข้อมูลภายในฐานข้อมูล
-#         conn.commit()
-#         ## ให้เปลี่ยนแปลงหน้า หลังจากที่บันทึกเสร็จ โดยใช้ คำสั่ง url_for ให้เปลี่ยนไปที่ Route Showdata
-#     return redirect(url_for('showData'))
 
 if __name__ == '__main__':
     app.run(debug=True)
