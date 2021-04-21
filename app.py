@@ -1,9 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import pickle
-from nltk import NaiveBayesClassifier as nbc
 from pythainlp.tokenize import word_tokenize
-import codecs
-from itertools import chain
 import pymysql
 
 app = Flask(__name__)
